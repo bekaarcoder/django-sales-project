@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-  Django Sales
+  Sales List
 {% endblock title %}
 
 {% block content %}
-  <h2>Hello Django</h2>
+  <h2>Sales List</h2>
+  {% for obj in object_list %}
+    <a href="{{obj.get_absolute_url}}">{{obj.transaction_id}}</a>
+  {% endfor %}
 {% endblock content %}

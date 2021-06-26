@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.shortcuts import reverse
 from products.models import Product
 from customers.models import Customer
 from profiles.models import Profile
@@ -31,6 +32,9 @@ class Sale(models.Model):
 
     def __str__(self):
         return f"Sale for the amount of ${self.total_price}"
+
+    def get_absolute_url(self):
+        return reverse("sales:detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
         if self.transaction_id == "":

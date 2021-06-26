@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Django Sales
+{% endblock title %}
+
+{% block content %}
+  <h2>Django Sales App</h2>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{form | crispy}}
+    <button type="submit" class="btn btn-primary mt-3">Search</button>
+  </form>
+{% endblock content %}
