@@ -7,6 +7,6 @@
 {% block content %}
   <h2>Sales List</h2>
   {% for obj in object_list %}
-    <a href="{{obj.get_absolute_url}}">{{obj.transaction_id}}</a>
+    <a href="{% url 'sales:detail' obj.pk %}">{{obj.transaction_id}}</a>
   {% endfor %}
 {% endblock content %}
