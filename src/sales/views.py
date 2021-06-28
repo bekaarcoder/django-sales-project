@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import Sale
 from .forms import SalesSearchForm
+from reports.forms import ReportForm
 import pandas as pd
-from .utils import get_customer_from_id, get_salesman_from_id
+from .utils import get_customer_from_id, get_salesman_from_id, get_chart
 
 
 def home_view(request):
@@ -11,12 +12,16 @@ def home_view(request):
     positions_df = None
     merged_df = None
     df = None
+    chart = None
+    no_data = None
     form = SalesSearchForm(request.POST or None)
+    report_form = ReportForm
 
     if request.method == "POST":
         date_from = request.POST.get("date_from")
         date_to = request.POST.get("date_to")
         chart_type = request.POST.get("chart_type")
+        results_by = request.POST.get("results_by")
 
         # select * from sales where created <= date_to and created >= date_from
         qs = Sale.objects.filter(
@@ -71,18 +76,30 @@ def home_view(request):
                 "price"
             ].agg("sum")
 
+            # chart = get_chart(
+            #     chart_type, df, labels=df["transaction_id"].values
+            # )
+
+            chart = get_chart(chart_type, sales_df, results_by)
+
             # Convert dataframe to html
             sales_df = sales_df.to_html()
             positions_df = positions_df.to_html()
             merged_df = merged_df.to_html()
             df = df.to_html()
 
+        else:
+            no_data = "No data available for the selected range."
+
     context = {
         "form": form,
+        "report_form": report_form,
         "sales_df": sales_df,
         "positions_df": positions_df,
         "merged_df": merged_df,
         "df": df,
+        "chart": chart,
+        "no_data": no_data,
     }
     return render(request, "sales/home.html", context)
 
