@@ -6,6 +6,12 @@ const reportName = document.querySelector("#id_name");
 const reportRemarks = document.querySelector("#id_remarks");
 const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 const reportForm = document.querySelector("#report-form");
+const alertBox = document.querySelector("#alert-box");
+
+const handleAlert = (type, message) => {
+    console.log(type);
+    alertBox.innerHTML = `<div class='alert alert-${type}'>${message}</div>`;
+};
 
 reportBtn.addEventListener("click", () => {
     chartImg.setAttribute("class", "img-fluid");
@@ -25,5 +31,6 @@ reportForm.addEventListener("submit", (e) => {
         body: formData,
     })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => handleAlert("success", data.message))
+        .catch((err) => handleAlert("danger", err.message));
 });

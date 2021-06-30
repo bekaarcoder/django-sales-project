@@ -3,6 +3,7 @@ from profiles.models import Profile
 from django.http import JsonResponse
 from .utils import get_report_image
 from .models import Report
+from django.views.generic import ListView, DetailView
 
 
 def create_report_view(request):
@@ -21,5 +22,15 @@ def create_report_view(request):
         return JsonResponse({"message": "Report saved Successfully."})
 
 
-def report_view(request):
-    return render(request, "reports/home.html")
+# def report_view(request):
+#     return render(request, "reports/home.html")
+
+
+class ReportListView(ListView):
+    model = Report
+    template_name = "reports/home.html"
+
+
+class ReportDetailView(DetailView):
+    model = Report
+    template_name = "reports/detail.html"
