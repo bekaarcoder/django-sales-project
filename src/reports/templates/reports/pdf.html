@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Report - {{object.name}}</title>
+        <style>
+            .row {
+                display: flex;
+                justify-content: center;
+            }
+
+            .col-md-10 {
+                width: 80%;
+            }
+
+            .image {
+                width: 100%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-10">
+                <h2>{{object.name}}</h2>
+                <img
+                    src="{{object.image.path}}"
+                    class="image"
+                    alt="{{object.name}}"
+                />
+                <p><strong>Remarks: </strong>{{object.remarks}}</p>
+                <p><strong>Author: </strong>{{object.author.user.username}}</p>
+                <p><strong>Created At: </strong>{{object.created}}</p>
+            </div>
+        </div>
+    </body>
+</html>

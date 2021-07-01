@@ -5,6 +5,22 @@
 {% endblock title %}
 
 {% block content %}
-  <h2>Report Detail</h2>
-  {{object.name}}
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      {% if object %}
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="text-muted">Report Detail</h3>
+          <a href="{% url 'reports:report-list' %}" class="btn btn-success btn-sm my-3">Go Back</a>
+        </div>
+        <h2>{{object.name}}</h2>
+        <img src="{{object.image.url}}" class="img-fluid mx-auto d-block" alt="{{object.name}}">
+        <p class="lead">{{object.remarks}}</p>
+        <p><strong>Author: </strong>{{object.author.user.username}}</p>
+        <p><strong>Created At: </strong>{{object.created}}</p>
+      {% else %}
+        <p class="text-center">The page you have been looking for is not here.</p>
+      {% endif %}
+      
+    </div>
+  </div>
 {% endblock content %}

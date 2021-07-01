@@ -17,7 +17,7 @@
                 <h5 class="card-title">{{obj.name}}</h5>
                 <p class="card-text">{{obj.remarks}}</p>
                 <a href="{% url 'reports:report-detail' obj.pk %}" class="btn btn-primary btn-sm">View Report</a>
-                <a href="#" class="btn btn-danger btn-sm">PDF Report</a>
+                <a href="{% url 'reports:pdf' obj.pk %}" class="btn btn-danger btn-sm">PDF Report</a>
               </div>
             </div>
           </div>
