@@ -1,12 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
+from django.utils.dateparse import parse_date
 from profiles.models import Profile
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from .utils import get_report_image
 from .models import Report
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
+from sales.models import Sale, Position, CSV
+from products.models import Product
+from customers.models import Customer
+import csv
 
 
 def create_report_view(request):
@@ -37,6 +42,53 @@ class ReportListView(ListView):
 class ReportDetailView(DetailView):
     model = Report
     template_name = "reports/detail.html"
+
+
+class UploadTemplateView(TemplateView):
+    template_name = "reports/from_file.html"
+
+
+def csv_upload_view(request):
+    print("file is being uploaded")
+    if request.method == "POST":
+        csv_file = request.FILES.get("file")
+        obj = CSV.objects.create(file_name=csv_file)
+
+        # open csv file
+        with open(obj.file_name.path, "r") as f:
+            reader = csv.reader(f)
+            reader.__next__()
+            for row in reader:
+                transaction_id = row[1]
+                product = row[2]
+                quantity = int(row[3])
+                customer = row[4]
+                created = parse_date(row[5])
+
+                try:
+                    product_obj = Product.objects.get(
+                        name__iexact=product
+                    )  # iexact is to ignore the case-sensitive
+                except Product.DoesNotExist:
+                    product_obj = None
+
+                if product_obj is not None:
+                    customer_obj, _ = Customer.objects.get_or_create(
+                        name=customer
+                    )
+                    salesman_obj = Profile.objects.get(user=request.user)
+                    position_obj = Position.objects.create(
+                        product=product_obj, quantity=quantity, created=created
+                    )
+                    sale_obj, _ = Sale.objects.get_or_create(
+                        transaction_id=transaction_id,
+                        customer=customer_obj,
+                        saleman=salesman_obj,
+                        created=created,
+                    )
+                    sale_obj.positions.add(position_obj)
+                    sale_obj.save()
+    return HttpResponse()
 
 
 def render_pdf_view(request, pk):
