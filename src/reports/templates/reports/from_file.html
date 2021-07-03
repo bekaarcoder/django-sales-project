@@ -12,8 +12,10 @@
 {% block content %}
   <div class="row">
       <div class="col-md-12">
-          <h3 class="text-muted">Upload CSV File</h3>
-          <form id="upload-from" class="dropzone dz mt-3">
+          <h3 class="text-muted my-3">Upload CSV File</h3>
+          <div id="alert-box">           
+          </div>
+          <form id="upload-form" class="dropzone dz mt-3">
             {% csrf_token %}
             <div class="fallback">
               <input name="file" type="file" multiple />

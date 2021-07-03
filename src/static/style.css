@@ -1,3 +1,11 @@
+.error-box {
+    border-color: #dc3545 !important;
+}
+
+.success-box {
+    border-color: #198754 !important;
+}
+
 .dz {
     border-style: dashed;
     border-radius: 5px;
