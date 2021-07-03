@@ -1,0 +1,63 @@
+{% url 'sales:home' as path_to_home %}
+{% url 'sales:list' as path_to_sales %}
+{% url 'reports:report-list' as path_to_reports %}
+{% url 'reports:file-upload' as path_to_upload %}
+{% url 'profiles:profile-view' as path_to_profile %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">DjangoSales</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_home %}active{% endif %}" href="{{path_to_home}}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_sales %}active{% endif %}" href="{{path_to_sales}}">Sales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_reports %}active{% endif %}" href="{{path_to_reports}}">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_upload %}active{% endif %}" href="{{path_to_upload}}">Upload CSV</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            {{request.user}}
+                        </a>
+                        <ul
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdown"
+                        >
+                            <li><a class="dropdown-item" href="{{path_to_profile}}">Profile</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout'  %}">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
