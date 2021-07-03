@@ -26,6 +26,10 @@ class Position(models.Model):
         print(self.sale_set.all())
         return sale_obj.id
 
+    def get_sales_customer(self):
+        sale_obj = self.sale_set.first()
+        return sale_obj.customer.name
+
 
 class Sale(models.Model):
     transaction_id = models.CharField(max_length=12, blank=True)

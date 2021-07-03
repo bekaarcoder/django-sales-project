@@ -5,8 +5,31 @@
 {% endblock title %}
 
 {% block content %}
-  <h2>Sales List</h2>
-  {% for obj in object_list %}
-    <a href="{% url 'sales:detail' obj.pk %}">{{obj.transaction_id}}</a>
-  {% endfor %}
+  <div class="row justify-content-center mt-3">
+    <div class="col-md-10">
+      <h2>Sales List</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Transaction Id</th>
+            <th>Total Price</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for obj in object_list %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td><a href="{% url 'sales:detail' obj.pk %}">{{obj.transaction_id}}</a></td>
+              <td>{{obj.total_price}}</td>
+              <td>{{obj.created}}</td>
+            </tr>          
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+  
 {% endblock content %}

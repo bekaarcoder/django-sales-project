@@ -5,6 +5,41 @@
 {% endblock title %}
 
 {% block content %}
-  <h2>Sale Details - {{object.pk}}</h2>
-  {{object.transaction_id}}
+  <div class="row justify-content-center mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="text-muted">Sale Details</h3>
+      <a href="{% url 'sales:list' %}" class="btn btn-sm btn-success">Go Back</a>
+    </div> 
+    <div class="col-md-2">
+      <img src="{{object.customer.logo.url}}" class="img-fluid">
+    </div>
+    <div class="col-md-8">
+      <h4 class="mb-3">Transaction Details</h4>
+      <p><strong>Transaction ID: </strong>{{object.transaction_id}}</p>
+      <p><strong>Salesman: </strong>{{object.saleman.user.username}}</p>
+      <p><strong>Items:</strong></p>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Customer</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pos in object.get_positions %}
+            <tr>
+              <th>{{forloop.counter}}</th>
+              <td>{{pos.product.name}}</td>
+              <td>{{pos.quantity}}</td>
+              <td>{{pos.price}}</td>
+              <td>{{pos.get_sales_customer}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock content %}
